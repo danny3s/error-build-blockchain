@@ -1,0 +1,1 @@
+npm i pubnub@4.21.6 —save
