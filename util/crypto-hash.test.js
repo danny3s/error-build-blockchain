@@ -5,11 +5,19 @@ describe('cryptoHash()', () => {
 
     it('generate a SHA-256 hashed output', () =>{
         expect(cryptoHash('ORRAIT'))
-        .toEqual('ebb51ca8da149a09826c302ad03a58aa22872e3133a4a2ff6efdd07086455f86')
+        .toEqual('2db2db57b4456c5db8436f0e425b9e94cb63c0219a03c8266c595fd1f7c5c796')
     });
 
     it('produces the same hash with the same input arguments in any order', () => {
         expect(cryptoHash('one', 'two', 'three'))
         .toEqual(cryptoHash('three', 'one', 'two'));
     });
+
+    it('produces a unique hash when the properties have changed on an input', () => {
+        const foo = {};
+        const originalHash = cryptoHash(foo);
+        foo['a'] = 'a';
+    
+        expect(cryptoHash(foo)).not.toEqual(originalHash);
+      });
 });
