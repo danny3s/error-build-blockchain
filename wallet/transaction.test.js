@@ -1,7 +1,7 @@
 const Transaction = require('./transaction');
 const Wallet = require('./index');
 const { verifySignature } = require('../util');
-
+const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
 describe('Transaction', () => {
     let transaction, senderWallet, recipient, amount;
@@ -18,6 +18,7 @@ describe('Transaction', () => {
         expect(transaction).toHaveProperty('id');
     });
 
+
     describe('outputMap', () => {
         it('has an `outputMap`', () => {
             expect(transaction).toHaveProperty('outputMap');
@@ -33,6 +34,7 @@ describe('Transaction', () => {
         });
 
     });
+
 
     describe('input', () => {
         it('has an `input`', () => {
@@ -62,6 +64,7 @@ describe('Transaction', () => {
           ).toBe(true);
         });
       });
+
 
     describe('validTransaction()', () => {
         let errorMock;
@@ -98,6 +101,7 @@ describe('Transaction', () => {
           });
         });
     });
+
 
     describe('update()', () => {
         let originalSignature, originalSenderOutput, nextRecipient, nextAmount;
@@ -166,6 +170,24 @@ describe('Transaction', () => {
             });
           });
     
+        });
+      });
+
+
+    describe('rewardTransaction()', () => {
+        let rewardTransaction, minerWallet;
+    
+        beforeEach(() => {
+          minerWallet = new Wallet();
+          rewardTransaction = Transaction.rewardTransaction({ minerWallet });
+        });
+    
+        it('creates a transaction with the reward input', () => {
+          expect(rewardTransaction.input).toEqual(REWARD_INPUT);
+        });
+    
+        it('creates one transaction for the miner with the `MINING_REWARD`', () => {
+          expect(rewardTransaction.outputMap[minerWallet.publicKey]).toEqual(MINING_REWARD);
         });
       });
     
