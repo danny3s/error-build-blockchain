@@ -50,7 +50,8 @@ app.post('/api/transact', (req, res) => {
         } else {
           transaction = wallet.createTransaction({
             recipient,
-            amount
+            amount,
+            chain: blockchain.chain
           });
         }
       } catch(error) {
@@ -72,6 +73,15 @@ app.get('/api/mine-transactions', (req, res) => {
   });
 
 
+  app.get('/api/wallet-info', (req, res) => {
+    const address = wallet.publicKey;
+  
+    res.json({
+      address,
+      balance: Wallet.calculateBalance({ chain: blockchain.chain, address })
+    });
+  });
+  
 
 app.get('/api/transaction-pool-map', (req, res) => {
     res.json(transactionPool.transactionMap);
