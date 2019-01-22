@@ -1,3 +1,4 @@
 npm i pubnub@4.21.6 —save
 npm i elliptic@6.4.1 --save
 npm i uuid@3.3.2 --save
+npm i && run dev
